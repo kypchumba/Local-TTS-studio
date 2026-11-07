@@ -113,7 +113,7 @@ textarea::placeholder {
 
 .controls {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
     margin-top: 25px;
 }
@@ -151,8 +151,14 @@ input[type="range"] {
 .range-info {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: #89918f;
     font-size: 12px;
+}
+
+.normal-speed {
+    color: #91dfce;
+    font-weight: 600;
 }
 
 .actions {
@@ -221,6 +227,203 @@ audio {
     text-decoration: none;
 }
 
+
+/* =========================
+   VOICE LIBRARY
+========================= */
+
+.voice-library {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.voice-library-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.voice-library-header strong {
+    font-size: 1rem;
+}
+
+.voice-library-header p {
+    color: #92969e;
+    font-size: 0.85rem;
+    margin-top: 0.35rem;
+}
+
+#voiceCount {
+    color: #92969e;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.voice-filters {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.voice-filters select {
+    min-width: 150px;
+    padding: 0.7rem 2rem 0.7rem 0.9rem;
+    background: #111317;
+    color: #e8e9eb;
+    border: 1px solid #292c32;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Card grid */
+
+.voice-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.voice-card {
+    min-width: 0;
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 14px;
+    background: #111317;
+    border: 1px solid #292c32;
+    border-radius: 10px;
+    transition: border-color 0.2s ease;
+}
+
+.voice-card:hover {
+    border-color: #555d65;
+}
+
+.voice-card.selected {
+    border-color: #91dfce;
+}
+
+.voice-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.voice-card-top strong {
+    display: block;
+    color: #f0f1f2;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.voice-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 6px;
+    color: #92969e;
+    font-size: 0.74rem;
+    line-height: 1.4;
+}
+
+/* Buttons */
+
+.voice-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+}
+
+.voice-actions button {
+    min-width: 0;
+    padding: 8px 5px;
+    border: 1px solid #343840;
+    border-radius: 7px;
+    background: transparent;
+    color: #e8e9eb;
+    font-size: 0.76rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.voice-actions button:hover {
+    border-color: #91dfce;
+}
+
+.voice-actions button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.voice-actions .select-btn {
+    background: #91dfce;
+    color: #08090b;
+    border-color: #91dfce;
+    font-weight: 600;
+}
+
+.voice-actions .select-btn:hover {
+    background: #b1f3e5;
+}
+
+/* Selected voice */
+
+.selected-voice {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 1.3rem;
+    padding: 1rem 0;
+    border-top: 1px solid #292c32;
+}
+
+.selected-voice span {
+    color: #92969e;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+}
+
+.selected-voice strong {
+    color: #91dfce;
+    font-size: 0.9rem;
+}
+
+/* Responsive layout */
+
+@media (max-width: 900px) {
+    .voice-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .voice-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .voice-filters {
+        flex-direction: column;
+    }
+
+    .voice-filters select {
+        width: 100%;
+    }
+
+    .voice-library-header {
+        align-items: flex-start;
+    }
+}
+
+
 @media (max-width: 600px) {
     body {
         padding: 24px 15px;
@@ -241,5 +444,21 @@ audio {
 
     .generate {
         width: 100%;
+    }
+
+    .voice-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .voice-filters {
+        flex-direction: column;
+    }
+
+    .voice-filters select {
+        width: 100%;
+    }
+
+    .voice-library-header {
+        align-items: flex-start;
     }
 }

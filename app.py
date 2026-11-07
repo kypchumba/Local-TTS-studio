@@ -18,9 +18,16 @@ from engine.tts_engine import TTSEngine
 # --------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent
+
+# Runtime directories
+MODELS_DIR = BASE_DIR / "models"
 OUTPUT_DIR = BASE_DIR / "outputs"
 
-OUTPUT_DIR.mkdir(exist_ok=True)
+PREVIEW_DIR = OUTPUT_DIR / "previews"
+PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
+
+MODELS_DIR.mkdir(parents=True, exist_ok=True)
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
 
@@ -57,6 +64,82 @@ def get_voices():
         "success": True,
         "voices": tts_engine.get_voices()
     })
+
+@app.route("/api/voice-library", methods=["GET"])
+def get_voice_library():
+    return jsonify({
+        "success": True,
+        "voices": tts_engine.get_voice_library()
+    })
+
+
+@app.route("/api/preview", methods=["POST"])
+def preview_voice():
+    try:
+        data = request.get_json(silent=True) or {}
+        voice = data.get("voice", "")
+
+        speed = float(data.get("speed", 1.0))
+        
+        if not 0.5 <= speed <= 2.0:
+            return jsonify({
+                "success": False,
+                "error": "Speed must be between 0.5 and 2.0."
+            }), 400
+
+        voice_info = next(
+            (item for item in tts_engine.get_voice_library()
+             if item["id"] == voice),
+            None
+        )
+
+        if not voice_info:
+            return jsonify({
+                "success": False,
+                "error": "Invalid voice selected."
+            }), 400
+
+        speed_key = f"{speed:.2f}".replace(".", "_")
+        filename = f"preview_{voice}_{speed_key}.wav"
+        output_path = PREVIEW_DIR / filename
+
+        if not output_path.exists():
+            sample_texts = {
+                "American English": "Hello! Welcome to Narrate. This is a preview of my voice.",
+                "British English": "Hello! Welcome to Narrate. This is a preview of my voice.",
+                "Spanish": "Hola. Bienvenido a Narrate. Esta es una muestra de mi voz.",
+                "French": "Bonjour. Bienvenue sur Narrate. Voici un aperçu de ma voix.",
+                "Hindi": "नमस्ते। Narrate में आपका स्वागत है।",
+                "Italian": "Ciao! Benvenuto su Narrate. Questa è un'anteprima della mia voce.",
+                "Japanese": "こんにちは。Narrateへようこそ。",
+                "Brazilian Portuguese": "Olá! Bem-vindo ao Narrate. Esta é uma amostra da minha voz.",
+                "Chinese": "你好！欢迎使用 Narrate。",
+            }
+
+            sample_text = sample_texts.get(
+                voice_info["language"],
+                "Hello! Welcome to Narrate."
+            )
+
+            tts_engine.generate(
+                text=sample_text,
+                voice=voice,
+                speed=speed,
+                output_path=output_path,
+                lang=voice_info["lang"]
+            )
+
+        return jsonify({
+            "success": True,
+            "audio_url": f"/outputs/previews/{filename}"
+        })
+
+    except Exception as error:
+        print(f"Preview error: {error}")
+        return jsonify({
+            "success": False,
+            "error": "Could not generate voice preview."
+        }), 500
 
 
 # --------------------------------------------------
@@ -145,6 +228,17 @@ def generate_speech():
 # --------------------------------------------------
 # SERVE GENERATED AUDIO
 # --------------------------------------------------
+
+@app.route("/outputs/previews/<filename>")
+def serve_preview(filename):
+    if not filename.endswith(".wav"):
+        return jsonify({"error": "Invalid audio file."}), 400
+
+    return send_from_directory(
+        PREVIEW_DIR,
+        filename,
+        as_attachment=False
+    )
 
 @app.route("/outputs/<filename>")
 def serve_audio(filename):

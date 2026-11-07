@@ -40,13 +40,6 @@
     <section class="controls">
 
         <div class="control">
-            <label for="voiceSelect">VOICE</label>
-            <select id="voiceSelect">
-                <option value="af_heart">Loading voices...</option>
-            </select>
-        </div>
-
-        <div class="control">
             <label for="speedRange">SPEAKING SPEED</label>
 
             <input
@@ -59,10 +52,47 @@
             >
 
             <div class="range-info">
-                <span>0.5x</span>
-                <strong id="speedValue">1.00x</strong>
-                <span>2.0x</span>
+                <span>slow</span>
+                <span class="normal-speed">▼ normal</span>
+                <span>fast</span>
             </div>
+        </div>
+
+        <div class="voice-library">
+        
+            <div class="voice-library-header">
+                <div>
+                    <strong>Choose a voice</strong>
+                    <p>Explore voices and listen before selecting.</p>
+                </div>
+                <span id="voiceCount">Loading voices...</span>
+            </div>
+        
+            <div class="voice-filters">
+                <select id="languageFilter">
+                    <option value="all">All languages</option>
+                </select>
+        
+                <select id="genderFilter">
+                    <option value="all">All genders</option>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+            </div>
+        
+            <div class="voice-grid" id="voiceGrid">
+                <p>Loading voice library...</p>
+            </div>
+        
+            <audio id="previewPlayer"></audio>
+        
+            <div class="selected-voice">
+                <span>SELECTED VOICE</span>
+                <strong id="selectedVoice">af_heart</strong>
+            </div>
+        
+            <input type="hidden" id="voiceSelect" value="af_heart">
+        
         </div>
 
     </section>
