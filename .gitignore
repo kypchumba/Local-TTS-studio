@@ -1,0 +1,22 @@
+
+# Virtual environments
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Model files
+models/*.onnx
+models/*.bin
+
+# Generated audio
+outputs/*
+!outputs/.gitkeep
+
+# Environment variables
+.env
+
+# IDE
+.vscode/

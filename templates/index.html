@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narrate Studio</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <header>
+        <div class="brand">narrate<span>.</span></div>
+        <div class="status">Local engine ready</div>
+    </header>
+
+    <section class="intro">
+        <h1>Give your words a voice.</h1>
+        <p>Turn your text into natural-sounding speech, powered by Kokoro.</p>
+    </section>
+
+    <section class="editor">
+
+        <div class="editor-top">
+            <strong>Your script</strong>
+            <span class="counter" id="counter">0 characters</span>
+        </div>
+
+        <textarea
+            id="textInput"
+            placeholder="Start writing or paste your narration script here..."
+        ></textarea>
+
+    </section>
+
+    <section class="controls">
+
+        <div class="control">
+            <label for="voiceSelect">VOICE</label>
+            <select id="voiceSelect">
+                <option value="af_heart">Loading voices...</option>
+            </select>
+        </div>
+
+        <div class="control">
+            <label for="speedRange">SPEAKING SPEED</label>
+
+            <input
+                type="range"
+                id="speedRange"
+                min="0.5"
+                max="2"
+                step="0.05"
+                value="1"
+            >
+
+            <div class="range-info">
+                <span>0.5x</span>
+                <strong id="speedValue">1.00x</strong>
+                <span>2.0x</span>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="actions">
+        <button class="generate" id="generateBtn">
+            Generate narration
+        </button>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <section class="audio-panel" id="audioPanel">
+        <h3>Your generated narration</h3>
+
+        <audio id="audioPlayer" controls></audio>
+
+        <a class="download" id="downloadLink" download>
+            Download WAV ↓
+        </a>
+    </section>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+
+</body>
+</html>
