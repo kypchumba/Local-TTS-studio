@@ -3,3 +3,6 @@ kokoro-onnx
 soundfile
 #numpy
 flask
+transformers
+torch
+sentencepiece

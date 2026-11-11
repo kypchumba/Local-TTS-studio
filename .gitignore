@@ -10,6 +10,7 @@ __pycache__/
 # Model files
 models/*.onnx
 models/*.bin
+models/huggingface/*
 
 # Generated audio
 outputs/*
